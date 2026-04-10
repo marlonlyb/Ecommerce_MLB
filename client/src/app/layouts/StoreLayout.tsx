@@ -43,6 +43,16 @@ export function StoreLayout() {
 
           {user ? (
             <>
+              {user.is_admin && (
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? 'nav-link nav-link--active' : 'nav-link'
+                  }
+                  to="/admin/products"
+                >
+                  Admin
+                </NavLink>
+              )}
               <NavLink
                 className={({ isActive }) =>
                   isActive ? 'nav-link nav-link--active' : 'nav-link'
