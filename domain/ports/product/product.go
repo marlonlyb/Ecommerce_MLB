@@ -11,6 +11,8 @@ type Repository interface {
 	Update(m *model.Product) error
 	Delete(ID uuid.UUID) error
 	UpdateActive(ID uuid.UUID, active bool) error
+	UpdateVariant(v model.StoreProductVariant) error
+	DeleteVariantByID(ID uuid.UUID) error
 
 	GetByID(ID uuid.UUID) (model.Product, error)
 	GetAll() (model.Products, error)

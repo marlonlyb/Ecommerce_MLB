@@ -215,7 +215,7 @@ export function CatalogPage() {
       ) : (
         <div className="catalog__grid">
           {filtered.map((product) => {
-            const image = product.images[0];
+            const image = product.images[0] || product.variants?.[0]?.image_url;
             return (
               <Link key={product.id} className="catalog__card" to={`/products/${product.id}`}>
                 {image ? (

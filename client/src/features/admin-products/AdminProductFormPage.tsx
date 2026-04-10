@@ -64,6 +64,7 @@ export function AdminProductFormPage() {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
+  const [images, setImages] = useState('');
   const [active, setActive] = useState(true);
   const [variants, setVariants] = useState<VariantForm[]>([{ ...EMPTY_VARIANT }]);
 
@@ -80,6 +81,7 @@ export function AdminProductFormPage() {
           setDescription(product.description);
           setCategory(product.category);
           setBrand(product.brand ?? '');
+          setImages(product.images.join(', '));
           setActive(product.active);
           setVariants(
             product.variants.length > 0
@@ -130,6 +132,11 @@ export function AdminProductFormPage() {
     setError(null);
     setSubmitting(true);
 
+    const imagesList = images
+      .split(',')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+
     try {
       if (isEdit && id) {
         const payload: UpdateProductPayload = {
@@ -137,6 +144,7 @@ export function AdminProductFormPage() {
           description,
           category,
           brand: brand || undefined,
+          images: imagesList,
           active,
           variants: variants.map((v) => ({
             id: v.id || undefined,
@@ -155,6 +163,7 @@ export function AdminProductFormPage() {
           description,
           category,
           brand: brand || undefined,
+          images: imagesList,
           active,
           variants: variants.map((v) => ({
             sku: v.sku,
@@ -251,6 +260,17 @@ export function AdminProductFormPage() {
                 />
               </label>
             </div>
+
+            <label className="admin__label">
+              Main images (comma-separated URLs)
+              <input
+                className="admin__input"
+                type="text"
+                placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                value={images}
+                onChange={(e) => setImages(e.target.value)}
+              />
+            </label>
 
             <label className="admin__label admin__label--checkbox">
               <input

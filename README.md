@@ -2,6 +2,8 @@
 
 Backend API for an e-commerce platform built with Go (v1.20) and the Echo web framework. It uses PostgreSQL as the database and integrates with PayPal for payments.
 
+The repository also contains the Store MVP frontend in `client/`, built with React 19 + Vite + TypeScript.
+
 ## Architecture
 
 This project follows a layered architecture (Hexagonal-inspired):
@@ -84,6 +86,10 @@ The planning and technical artifacts for the store MVP are grouped in `docs/stor
 - `docs/store-mvp/Spec-Frontend-TiendaRopa.md`
 - `docs/store-mvp/Spec-Backend-TiendaRopa.md`
 
+Operational summaries and implementation notes are stored in `docs/session-summaries/`, including the latest admin image / product edit fix:
+
+- `docs/session-summaries/2026-04-11-admin-product-images-and-variant-update-fix.md`
+
 ## Frontend Store MVP (`client/`)
 
 `client/` now hosts the React 19 + Vite + TypeScript SPA base for the store MVP.
@@ -110,6 +116,27 @@ ALLOWED_ORIGINS=http://localhost:5173
 ```
 
 See `client/README.md` for the frontend-specific notes.
+
+### Current frontend version
+
+- `client/package.json` → `0.1.1`
+
+### Admin image fields semantics
+
+The admin product form now exposes two image concepts:
+
+- **Main images** → saved in `product.images`; intended for the generic product image.
+- **Image URL** → saved in `variant.image_url`; intended for a variant-specific image.
+
+Current rendering behavior:
+
+- **Catalog**: uses `product.images[0]` first and falls back to the first variant image if needed.
+- **Product detail**: uses the selected variant image first and falls back to `product.images[0]`.
+
+Recommended usage:
+
+- If the product has one shared image, fill `Main images` and leave variant `Image URL` empty.
+- If a color/size needs its own image, keep a valid `Main images` fallback and add a valid `Image URL` to that variant.
 
 ## Session Summaries
 

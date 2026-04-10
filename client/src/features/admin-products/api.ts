@@ -12,6 +12,7 @@ export interface CreateProductPayload {
   description: string;
   category: string;
   brand?: string;
+  images: string[];
   active: boolean;
   variants: CreateVariantPayload[];
 }
@@ -30,6 +31,7 @@ export interface UpdateProductPayload {
   description: string;
   category: string;
   brand?: string;
+  images: string[];
   active: boolean;
   variants: UpdateVariantPayload[];
 }

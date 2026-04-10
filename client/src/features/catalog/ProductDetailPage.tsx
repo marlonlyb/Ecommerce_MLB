@@ -106,7 +106,7 @@ export function ProductDetailPage() {
     addItem({
       product_id: product.id,
       product_name: product.name,
-      product_image: product.images[0] ?? '',
+      product_image: currentVariant.image_url || product.images[0] || '',
       variant_id: currentVariant.id,
       variant_sku: currentVariant.sku,
       color: currentVariant.color,
@@ -142,7 +142,7 @@ export function ProductDetailPage() {
     );
   }
 
-  const mainImage = product.images[0] ?? currentVariant?.image_url;
+  const mainImage = currentVariant?.image_url || product.images[0];
 
   return (
     <section className="detail">

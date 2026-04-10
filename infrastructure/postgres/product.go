@@ -178,6 +178,53 @@ func (p Product) DeleteVariantsByProductID(productID uuid.UUID) error {
 	return nil
 }
 
+func (p Product) DeleteVariantByID(ID uuid.UUID) error {
+	_, err := p.db.Exec(
+		context.Background(),
+		"DELETE FROM product_variants WHERE id = $1",
+		ID,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p Product) UpdateVariant(v model.StoreProductVariant) error {
+	imageURL := sql.NullString{}
+	if v.ImageURL != "" {
+		imageURL.String = v.ImageURL
+		imageURL.Valid = true
+	}
+
+	_, err := p.db.Exec(
+		context.Background(),
+		`UPDATE product_variants
+		 SET sku = $1,
+		     color = $2,
+		     size = $3,
+		     price = $4,
+		     stock = $5,
+		     image_url = $6,
+		     updated_at = NOW()
+		 WHERE id = $7 AND product_id = $8`,
+		v.SKU,
+		v.Color,
+		v.Size,
+		v.Price,
+		v.Stock,
+		imageURL,
+		v.ID,
+		v.ProductID,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (p Product) GetByID(ID uuid.UUID) (model.Product, error) {
 	query := pPsqlGetAll + " WHERE id = $1"
 	row := p.db.QueryRow(

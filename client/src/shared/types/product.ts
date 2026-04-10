@@ -29,6 +29,8 @@ export interface ProductSummary {
   price_from?: number;
   available_colors?: string[];
   available_sizes?: string[];
+  /** Variants may be present from the backend even on list endpoints (omitempty). */
+  variants?: ProductVariant[];
 }
 
 // ─── Product Detail (detail endpoint) ─────────────────────────────────

@@ -160,14 +160,53 @@ func (p Product) CreateVariants(productID uuid.UUID, variants []model.StoreProdu
 }
 
 func (p Product) ReplaceVariants(productID uuid.UUID, variants []model.StoreProductVariant) error {
-	err := p.Repository.DeleteVariantsByProductID(productID)
+	existingProduct, err := p.Repository.GetStoreByIDAdmin(productID)
 	if err != nil {
-		return fmt.Errorf("%s %w", "Repository.DeleteVariantsByProductID()", err)
+		return fmt.Errorf("%s %w", "Repository.GetStoreByIDAdmin(productID)", err)
 	}
 
-	err = p.Repository.CreateVariants(productID, variants)
-	if err != nil {
-		return fmt.Errorf("%s %w", "Repository.CreateVariants()", err)
+	existingByID := make(map[uuid.UUID]model.StoreProductVariant, len(existingProduct.Variants))
+	for _, existing := range existingProduct.Variants {
+		existingByID[existing.ID] = existing
 	}
+
+	incomingIDs := make(map[uuid.UUID]struct{}, len(variants))
+	newVariants := make([]model.StoreProductVariant, 0)
+
+	for _, variant := range variants {
+		variant.ProductID = productID
+
+		if variant.ID != uuid.Nil {
+			incomingIDs[variant.ID] = struct{}{}
+			if _, exists := existingByID[variant.ID]; exists {
+				err = p.Repository.UpdateVariant(variant)
+				if err != nil {
+					return fmt.Errorf("%s %w", "Repository.UpdateVariant()", err)
+				}
+				continue
+			}
+		}
+
+		newVariants = append(newVariants, variant)
+	}
+
+	for existingID := range existingByID {
+		if _, keep := incomingIDs[existingID]; keep {
+			continue
+		}
+
+		err = p.Repository.DeleteVariantByID(existingID)
+		if err != nil {
+			return fmt.Errorf("%s %w", "Repository.DeleteVariantByID()", err)
+		}
+	}
+
+	if len(newVariants) > 0 {
+		err = p.Repository.CreateVariants(productID, newVariants)
+		if err != nil {
+			return fmt.Errorf("%s %w", "Repository.CreateVariants()", err)
+		}
+	}
+
 	return nil
 }
