@@ -19,6 +19,11 @@ keys
 # Environments
 .env
 .atl/
+client/node_modules/
+client/dist/
+client/*.tsbuildinfo
+client/vite.config.js
+client/vite.config.d.ts
 
 # Test binary, built with `go test -c`
 *.test

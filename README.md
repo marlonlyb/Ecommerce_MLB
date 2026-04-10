@@ -84,10 +84,37 @@ The planning and technical artifacts for the store MVP are grouped in `docs/stor
 - `docs/store-mvp/Spec-Frontend-TiendaRopa.md`
 - `docs/store-mvp/Spec-Backend-TiendaRopa.md`
 
+## Frontend Store MVP (`client/`)
+
+`client/` now hosts the React 19 + Vite + TypeScript SPA base for the store MVP.
+
+### Frontend setup
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Create `client/.env` from `client/.env.example` and define:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080/api/v1
+VITE_PAYPAL_CLIENT_ID=your_paypal_sandbox_client_id
+```
+
+For local development, allow the Vite origin in the backend root `.env`:
+
+```env
+ALLOWED_ORIGINS=http://localhost:5173
+```
+
+See `client/README.md` for the frontend-specific notes.
+
 ## Session Summaries
 
 Chronological project summaries are stored in `docs/session-summaries/`.
 Use date-first filenames (`YYYY-MM-DD-description.md`) so they remain naturally ordered over time.
 
-## Project Client (Testing)
-A static HTML file is located in `client/index.html`. You can serve this file locally to test static PayPal buttons against your backend endpoints.
+## Project Client (Legacy note)
+The old static PayPal test page has been replaced by the Vite SPA entrypoint in `client/index.html`.
