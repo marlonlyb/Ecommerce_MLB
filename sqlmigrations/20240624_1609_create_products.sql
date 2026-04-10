@@ -10,4 +10,4 @@ CREATE TABLE products(
     CONSTRAINT products_id_pk PRIMARY KEY (id)
 );
 
-COMMENT ON TABLE products IS 'Storage the products for the e-commerce'
+COMMENT ON TABLE products IS 'Storage the products for the e-commerce';

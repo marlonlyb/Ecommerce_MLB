@@ -10,6 +10,6 @@ CREATE TABLE purchase_orders (
 	    REFERENCES users (id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-COMMENT ON TABLE purchase_order IS 'Storage the purchase orders';
+COMMENT ON TABLE purchase_orders IS 'Storage the purchase orders';
 
 DELETE FROM public.purchase_orders;
