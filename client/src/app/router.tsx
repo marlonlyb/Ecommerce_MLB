@@ -5,6 +5,8 @@ import { StoreLayout } from './layouts/StoreLayout';
 import { LoginPage } from '../features/auth/LoginPage';
 import { RegisterPage } from '../features/auth/RegisterPage';
 import { CatalogPage } from '../features/catalog/CatalogPage';
+import { ProductDetailPage } from '../features/catalog/ProductDetailPage';
+import { CartPage } from '../features/cart/CartPage';
 import { CheckoutPage } from '../features/checkout/CheckoutPage';
 import { OrdersPage } from '../features/orders/OrdersPage';
 import { ProfilePage } from '../features/profile/ProfilePage';
@@ -18,6 +20,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <CatalogPage /> },
       { path: 'products', element: <CatalogPage /> },
+      { path: 'products/:id', element: <ProductDetailPage /> },
+      { path: 'cart', element: <CartPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'register', element: <RegisterPage /> },
     ],

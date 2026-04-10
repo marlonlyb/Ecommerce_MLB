@@ -1,5 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 
+import { useCart } from '../providers/CartProvider';
+
 const links = [
   { to: '/', label: 'Store' },
   { to: '/products', label: 'Products' },
@@ -8,6 +10,8 @@ const links = [
 ] as const;
 
 export function StoreLayout() {
+  const { itemCount } = useCart();
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -28,6 +32,14 @@ export function StoreLayout() {
               {link.label}
             </NavLink>
           ))}
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? 'nav-link nav-link--active' : 'nav-link'
+            }
+            to="/cart"
+          >
+            Cart{itemCount > 0 ? ` (${itemCount})` : ''}
+          </NavLink>
         </nav>
       </header>
 
