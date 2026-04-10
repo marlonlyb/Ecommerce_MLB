@@ -8,13 +8,12 @@ import (
 // Para autorizaciones:
 // func productAdminRoutes(e *echo.Echo, h productPorts.ProductHandlers, middlewares ...echo.MiddlewareFunc) {
 func ProductAdmin(e *echo.Echo, h handlers.ProductHandler, middlewares ...echo.MiddlewareFunc) {
-	// g := e.Group("/api/v1/admin/products, middlewares ...")
 	g := e.Group("/api/v1/admin/products", middlewares...)
 
 	g.POST("", h.Create)
 	g.PUT("/:id", h.Update)
 	g.DELETE("/:id", h.Delete)
-	g.GET("", h.GetAll)
+	g.GET("", h.GetAllStore)
 	g.GET("/:id", h.GetByID)
 }
 

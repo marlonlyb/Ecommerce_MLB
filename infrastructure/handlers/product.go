@@ -128,3 +128,13 @@ func (h *Product) GetStoreAll(c echo.Context) error {
 
 	return c.JSON(response.ContractOK(map[string]interface{}{"items": products}))
 }
+
+// GetAllStore returns all products including inactive ones (admin only).
+func (h *Product) GetAllStore(c echo.Context) error {
+	products, err := h.service.GetStoreAllAdmin()
+	if err != nil {
+		return response.ContractError(500, "unexpected_error", "No fue posible obtener los productos")
+	}
+
+	return c.JSON(response.ContractOK(map[string]interface{}{"items": products}))
+}

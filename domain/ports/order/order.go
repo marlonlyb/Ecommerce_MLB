@@ -9,8 +9,10 @@ import (
 type Repository interface {
 	Create(order *model.Order) error
 	ListByUserID(userID uuid.UUID) ([]model.Order, error)
+	ListAll() ([]model.Order, error)
 	GetByID(orderID uuid.UUID) (model.Order, error)
 	GetByIDForUser(orderID, userID uuid.UUID) (model.Order, error)
+	UpdateStatus(orderID uuid.UUID, status string) (model.Order, error)
 	AttachPayPalOrderID(orderID uuid.UUID, payPalOrderID string) error
 	MarkPayPalCaptured(orderID uuid.UUID, payPalOrderID, payPalCaptureID string) (model.Order, error)
 }
@@ -34,4 +36,7 @@ type Service interface {
 	CapturePayPal(userID, orderID uuid.UUID, request model.CapturePayPalOrderRequest) (model.Order, error)
 	ListByUserID(userID uuid.UUID) ([]model.Order, error)
 	GetByIDForUser(orderID, userID uuid.UUID) (model.Order, error)
+	ListAll() ([]model.Order, error)
+	GetByID(orderID uuid.UUID) (model.Order, error)
+	UpdateStatus(orderID uuid.UUID, status string) (model.Order, error)
 }

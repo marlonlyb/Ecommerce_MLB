@@ -15,6 +15,7 @@ type Repository interface {
 	GetAll() (model.Products, error)
 	GetStoreByID(ID uuid.UUID) (model.StoreProduct, error)
 	GetStoreAll() ([]model.StoreProduct, error)
+	GetStoreAllAdmin() ([]model.StoreProduct, error)
 }
 
 type RepositoryPurchaseOrder interface {
@@ -30,4 +31,5 @@ type Service interface {
 	GetAll() (model.Products, error)
 	GetStoreByID(ID uuid.UUID) (model.StoreProduct, error)
 	GetStoreAll() ([]model.StoreProduct, error)
+	GetStoreAllAdmin() ([]model.StoreProduct, error)
 }

@@ -147,6 +147,10 @@ func (p Product) GetStoreAll() ([]model.StoreProduct, error) {
 	return p.getStoreProducts("WHERE p.active = TRUE", nil)
 }
 
+func (p Product) GetStoreAllAdmin() ([]model.StoreProduct, error) {
+	return p.getStoreProducts("", nil)
+}
+
 func (p Product) getStoreProducts(whereClause string, arg interface{}) ([]model.StoreProduct, error) {
 	query := `
 		SELECT

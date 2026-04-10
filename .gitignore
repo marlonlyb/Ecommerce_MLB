@@ -19,6 +19,7 @@ keys
 # Environments
 .env
 .atl/
+client/.env
 client/node_modules/
 client/dist/
 client/*.tsbuildinfo

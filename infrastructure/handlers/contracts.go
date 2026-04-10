@@ -17,6 +17,7 @@ type ProductHandler interface {
 	GetAll(c echo.Context) error
 	GetStoreByID(c echo.Context) error
 	GetStoreAll(c echo.Context) error
+	GetAllStore(c echo.Context) error
 }
 
 type PurchaseOrderHandler interface {
@@ -28,6 +29,9 @@ type OrderHandler interface {
 	CapturePayPal(c echo.Context) error
 	GetMine(c echo.Context) error
 	GetByID(c echo.Context) error
+	GetAll(c echo.Context) error
+	GetAdminByID(c echo.Context) error
+	UpdateStatus(c echo.Context) error
 }
 
 type LoginHandler interface {

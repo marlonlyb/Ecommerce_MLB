@@ -59,6 +59,7 @@ func (s *Server) Initialize() {
 	routes.ProductAdmin(e, s.pHandler, authMiddleware.IsValid, authMiddleware.IsAdmin)
 	routes.ProductPublic(e, s.pHandler)
 
+	routes.OrdersAdmin(e, s.oHandler, authMiddleware.IsValid, authMiddleware.IsAdmin)
 	routes.OrdersPrivate(e, s.oHandler, authMiddleware.IsValid)
 	routes.PurchaseOrderPrivate(e, s.poHandler, authMiddleware.IsValid)
 

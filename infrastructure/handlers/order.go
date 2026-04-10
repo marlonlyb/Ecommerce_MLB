@@ -100,6 +100,57 @@ func (h *Order) GetByID(c echo.Context) error {
 	return c.JSON(response.ContractOK(orderData))
 }
 
+// GetAll returns all orders (admin only).
+func (h *Order) GetAll(c echo.Context) error {
+	orders, err := h.service.ListAll()
+	if err != nil {
+		return response.ContractError(500, "unexpected_error", "No fue posible obtener las órdenes")
+	}
+
+	return c.JSON(response.ContractOK(map[string]interface{}{"items": orders}))
+}
+
+// GetAdminByID returns any order by ID (admin only).
+func (h *Order) GetAdminByID(c echo.Context) error {
+	orderID, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		return response.ContractError(400, "validation_error", "El identificador de la orden no es válido")
+	}
+
+	orderData, err := h.service.GetByID(orderID)
+	if err != nil {
+		return mapOrderError(err)
+	}
+
+	return c.JSON(response.ContractOK(orderData))
+}
+
+// UpdateStatus changes the status of an order (admin only).
+func (h *Order) UpdateStatus(c echo.Context) error {
+	orderID, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		return response.ContractError(400, "validation_error", "El identificador de la orden no es válido")
+	}
+
+	var body struct {
+		Status string `json:"status"`
+	}
+	if err = c.Bind(&body); err != nil {
+		return response.ContractError(400, "validation_error", "Los datos enviados no son válidos")
+	}
+
+	if body.Status == "" {
+		return response.ContractError(400, "validation_error", "El campo status es requerido")
+	}
+
+	orderData, err := h.service.UpdateStatus(orderID, body.Status)
+	if err != nil {
+		return mapOrderError(err)
+	}
+
+	return c.JSON(response.ContractOK(orderData))
+}
+
 func parseUserID(c echo.Context) (uuid.UUID, error) {
 	userID, ok := c.Get("userID").(uuid.UUID)
 	if !ok || userID == uuid.Nil {

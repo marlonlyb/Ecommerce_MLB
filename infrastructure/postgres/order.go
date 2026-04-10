@@ -57,6 +57,10 @@ func (r *Order) ListByUserID(userID uuid.UUID) ([]model.Order, error) {
 	return r.queryOrders(`WHERE o.user_id = $1 ORDER BY o.created_at DESC`, userID)
 }
 
+func (r *Order) ListAll() ([]model.Order, error) {
+	return r.queryOrders(`ORDER BY o.created_at DESC`)
+}
+
 func (r *Order) GetByID(orderID uuid.UUID) (model.Order, error) {
 	orders, err := r.queryOrders(`WHERE o.id = $1`, orderID)
 	if err != nil {
@@ -66,6 +70,16 @@ func (r *Order) GetByID(orderID uuid.UUID) (model.Order, error) {
 		return model.Order{}, pgx.ErrNoRows
 	}
 	return orders[0], nil
+}
+
+func (r *Order) UpdateStatus(orderID uuid.UUID, status string) (model.Order, error) {
+	_, err := r.db.Exec(context.Background(), `
+		UPDATE orders SET status = $2, updated_at = NOW() WHERE id = $1
+	`, orderID, status)
+	if err != nil {
+		return model.Order{}, err
+	}
+	return r.GetByID(orderID)
 }
 
 func (r *Order) GetByIDForUser(orderID, userID uuid.UUID) (model.Order, error) {

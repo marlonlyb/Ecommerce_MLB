@@ -177,6 +177,39 @@ func (s *Order) GetByIDForUser(orderID, userID uuid.UUID) (model.Order, error) {
 	return orderData, nil
 }
 
+func (s *Order) ListAll() ([]model.Order, error) {
+	return s.Repository.ListAll()
+}
+
+func (s *Order) GetByID(orderID uuid.UUID) (model.Order, error) {
+	orderData, err := s.Repository.GetByID(orderID)
+	if err != nil {
+		return model.Order{}, fmt.Errorf("%w: %v", ErrOrderNotFound, err)
+	}
+
+	return orderData, nil
+}
+
+func (s *Order) UpdateStatus(orderID uuid.UUID, status string) (model.Order, error) {
+	validStatuses := map[string]bool{
+		model.OrderStatusPendingPayment: true,
+		model.OrderStatusPaid:           true,
+		model.OrderStatusPaymentFailed:  true,
+		model.OrderStatusCancelled:      true,
+		model.OrderStatusRefunded:       true,
+	}
+	if !validStatuses[status] {
+		return model.Order{}, fmt.Errorf("%w: invalid status %q", ErrValidation, status)
+	}
+
+	_, err := s.Repository.GetByID(orderID)
+	if err != nil {
+		return model.Order{}, fmt.Errorf("%w: %v", ErrOrderNotFound, err)
+	}
+
+	return s.Repository.UpdateStatus(orderID, status)
+}
+
 func roundMoney(value float64) float64 {
 	return math.Round(value*100) / 100
 }

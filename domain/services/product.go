@@ -118,3 +118,12 @@ func (p Product) GetStoreAll() ([]model.StoreProduct, error) {
 
 	return products, nil
 }
+
+func (p Product) GetStoreAllAdmin() ([]model.StoreProduct, error) {
+	products, err := p.Repository.GetStoreAllAdmin()
+	if err != nil {
+		return nil, fmt.Errorf("%s %w", "Repository.GetStoreAllAdmin()", err)
+	}
+
+	return products, nil
+}
